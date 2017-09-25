@@ -15,6 +15,9 @@ display_height = 600
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Snake')
 
+icon = pygame.image.load('snake.ico')
+pygame.display.set_icon(icon)
+
 pygame.display.update()
 
 block_size = 20
