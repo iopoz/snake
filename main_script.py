@@ -85,6 +85,10 @@ def game_loop():
     fps = 10
     count_apple = 0
 
+    level = 1
+    next_level = 2
+    level_for_pill = 3
+
     apple_before = 0
     game_exit = False
     game_over = False
@@ -100,8 +104,13 @@ def game_loop():
     rand_apple_x = round(random.randrange(0, display_width - block_size))  # / 10.0) * 10.0
     rand_apple_y = round(random.randrange(0, display_height - block_size))  # / 10.0) * 10.0
 
+    rand_pill_x = round(random.randrange(0, display_width - block_size))  # / 10.0) * 10.0
+    rand_pill_y = round(random.randrange(0, display_height - block_size))  # / 10.0) * 10.0
+
+
+
     while not game_exit:
-        pygame.display.set_caption('Snake. Count: %s' % count_apple)
+        pygame.display.set_caption('Snake. Count: %s. Level: %s' % (count_apple, level))
         while game_over:
             message_to_screen('Game over',
                               red,
@@ -163,6 +172,11 @@ def game_loop():
             if snake_element == snake_head:
                 game_over = True
 
+        if level_for_pill < level:
+            level_for_pill += level_for_pill
+            pygame.draw.rect(game_display, green, [rand_pill_x, rand_pill_y, apple_thickness, apple_thickness])
+
+
         snake(block_size, snake_list)
         pygame.display.update()
 
@@ -175,8 +189,20 @@ def game_loop():
 
         if apple_before + 5 < count_apple:
             fps += 3
+            level += 1
             apple_before = count_apple
         clock.tick(fps)
+
+        if next_level < level:
+            next_level += 1
+
+        if rand_pill_x < lead_x < rand_pill_x + apple_thickness or rand_pill_x < lead_x + block_size < rand_pill_x + apple_thickness:
+            if rand_pill_y < lead_y < rand_pill_y + apple_thickness or rand_pill_y < lead_y + block_size < rand_pill_y + apple_thickness:
+                rand_pill_x = round(random.randrange(0, display_width - block_size))  # / 10.0) * 10.0
+                rand_pill_y = round(random.randrange(0, display_height - block_size))  # / 10.0) * 10.0
+                snake_length -= 3
+                fps -= 2
+
 
     pygame.quit()
 
