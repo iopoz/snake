@@ -82,8 +82,10 @@ def snake(block_size, snake_list):
 
 
 def game_loop():
+    global draw_pill
     fps = 10
     count_apple = 0
+    flag = False
 
     level = 1
     next_level = 2
@@ -174,6 +176,12 @@ def game_loop():
 
         if level_for_pill < level:
             level_for_pill += level_for_pill
+            flag = True
+
+        if flag:
+            draw_pill()
+
+        def draw_pill():
             pygame.draw.rect(game_display, green, [rand_pill_x, rand_pill_y, apple_thickness, apple_thickness])
 
 
@@ -201,7 +209,9 @@ def game_loop():
                 rand_pill_x = round(random.randrange(0, display_width - block_size))  # / 10.0) * 10.0
                 rand_pill_y = round(random.randrange(0, display_height - block_size))  # / 10.0) * 10.0
                 snake_length -= 3
+                snake_list = snake_list[:-4]
                 fps -= 2
+                flag = False
 
 
     pygame.quit()
